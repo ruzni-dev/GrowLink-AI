@@ -5,6 +5,7 @@ const links = [
   { label: 'Home', href: '#home' },
   { label: 'Explore Talent', href: '/talents' },
   { label: 'Mentorship', href: '/mentors' },
+  { label: 'Recommendations', href: '/recommendations' },
   { label: 'Categories', href: '#categories' },
   { label: 'Opportunities', href: '/opportunities' },
   { label: 'About Us', href: '#about' },

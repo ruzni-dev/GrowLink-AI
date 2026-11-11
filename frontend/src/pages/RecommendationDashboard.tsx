@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState, type FormEvent } from 'react';
+import { useCallback, useEffect, useState, type FormEvent, type ReactNode } from 'react';
 import { useAuth } from '../context/useAuth';
 import { recommendationCategoryOptions, recommendationService, type RecommendationDashboard as DashboardData, type RecommendationPreferences } from '../services/recommendationService';
+import './recommendations.css';
 import './recommendations.css';
 
 type RecommendationDashboardProps = { onNavigate: (path: string) => void; onNotify: (message: string) => void };
@@ -63,7 +64,7 @@ export function RecommendationDashboard({ onNavigate, onNotify }: Recommendation
     </div></main>;
 }
 
-function RecommendationSection({ eyebrow, title, empty, onBrowse, browseLabel, children }: { eyebrow: string; title: string; empty: string; onBrowse: () => void; browseLabel: string; children: React.ReactNode }) {
+function RecommendationSection({ eyebrow, title, empty, onBrowse, browseLabel, children }: { eyebrow: string; title: string; empty: string; onBrowse: () => void; browseLabel: string; children: ReactNode }) {
   const content = Array.isArray(children) ? children.filter(Boolean) : children;
   const hasContent = Array.isArray(content) ? content.length > 0 : Boolean(content);
   return <section className="recommendation-section"><div className="recommendation-section-heading"><div><p className="eyebrow">{eyebrow}</p><h2>{title}</h2></div><button className="recommendation-text-button" type="button" onClick={onBrowse}>{browseLabel} →</button></div>{hasContent ? <div className="recommendation-grid">{children}</div> : <div className="recommendation-empty"><p>{empty}</p><button className="button button--outline" type="button" onClick={onBrowse}>{browseLabel}</button></div>}</section>;

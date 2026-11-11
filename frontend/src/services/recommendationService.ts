@@ -1,6 +1,6 @@
 import type { MentorshipMode } from './mentorshipService';
 import type { PublicTalent } from './talentService';
-import type { Opportunity, OpportunityCategory, OpportunityCategoryOption } from './opportunityService';
+import type { Opportunity } from './opportunityService';
 
 export type RemotePreference = 'ANY' | 'REMOTE_ONLY' | 'ONSITE_ONLY';
 export type RecommendationPreferences = { preferredCategories: string[]; preferredLocations: string[]; interestedSkills: string[]; learningInterests: string[]; learningGoals: string[]; remotePreference: RemotePreference; updatedAt?: string };
@@ -28,22 +28,22 @@ export const recommendationService = {
   savePreferences: (token: string, preferences: RecommendationPreferences) => request<RecommendationPreferences>(token, '/preferences', { method: 'PUT', body: JSON.stringify(preferences) }),
 };
 
-export const recommendationCategoryOptions: OpportunityCategoryOption[] = [
-  { value: 'JOB' as OpportunityCategory, label: 'Jobs' },
-  { value: 'INTERNSHIP' as OpportunityCategory, label: 'Internships' },
-  { value: 'SCHOLARSHIP' as OpportunityCategory, label: 'Scholarships' },
-  { value: 'TRAINING' as OpportunityCategory, label: 'Training' },
-  { value: 'VOLUNTEERING' as OpportunityCategory, label: 'Volunteering' },
-  { value: 'COMPETITION' as OpportunityCategory, label: 'Competitions' },
-  { value: 'HACKATHON' as OpportunityCategory, label: 'Hackathons' },
-  { value: 'EVENT' as OpportunityCategory, label: 'Events' },
-  { value: 'EDUCATION_LEARNING' as OpportunityCategory, label: 'Education & Learning' },
-  { value: 'TECHNOLOGY_DIGITAL_SKILLS' as OpportunityCategory, label: 'Technology & Digital Skills' },
-  { value: 'CAREER_PROFESSIONAL_DEVELOPMENT' as OpportunityCategory, label: 'Career & Professional Development' },
-  { value: 'MENTORSHIP_GUIDANCE' as OpportunityCategory, label: 'Mentorship & Guidance' },
-  { value: 'SPORTS_COACHING' as OpportunityCategory, label: 'Sports & Coaching' },
-  { value: 'VOLUNTEERING_SOCIAL_SERVICES' as OpportunityCategory, label: 'Volunteering & Social Services' },
-  { value: 'ENTREPRENEURSHIP' as OpportunityCategory, label: 'Entrepreneurship' },
-  { value: 'ARTS_CULTURE' as OpportunityCategory, label: 'Arts & Culture' },
-  { value: 'OTHER' as OpportunityCategory, label: 'Other' },
+export const recommendationCategoryOptions: { value: string; label: string }[] = [
+  { value: 'JOB', label: 'Jobs' },
+  { value: 'INTERNSHIP', label: 'Internships' },
+  { value: 'SCHOLARSHIP', label: 'Scholarships' },
+  { value: 'TRAINING', label: 'Training' },
+  { value: 'VOLUNTEERING', label: 'Volunteering' },
+  { value: 'COMPETITION', label: 'Competitions' },
+  { value: 'HACKATHON', label: 'Hackathons' },
+  { value: 'EVENT', label: 'Events' },
+  { value: 'EDUCATION_LEARNING', label: 'Education & Learning' },
+  { value: 'TECHNOLOGY_DIGITAL_SKILLS', label: 'Technology & Digital Skills' },
+  { value: 'CAREER_PROFESSIONAL_DEVELOPMENT', label: 'Career & Professional Development' },
+  { value: 'MENTORSHIP_GUIDANCE', label: 'Mentorship & Guidance' },
+  { value: 'SPORTS_COACHING', label: 'Sports & Coaching' },
+  { value: 'VOLUNTEERING_SOCIAL_SERVICES', label: 'Volunteering & Social Services' },
+  { value: 'ENTREPRENEURSHIP', label: 'Entrepreneurship' },
+  { value: 'ARTS_CULTURE', label: 'Arts & Culture' },
+  { value: 'OTHER', label: 'Other' },
 ];

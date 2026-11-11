@@ -8,10 +8,15 @@ import './opportunity.css';
 type OpportunityDiscoveryProps = { onNavigate: (path: string) => void; onNotify: (message: string) => void };
 const empty: Filters = { page: 0, size: 9, sortBy: 'recent' };
 
+function initialFilters(): Filters {
+  const search = new URLSearchParams(window.location.search);
+  return { ...empty, q: search.get('q') || '', category: search.get('category') || '' };
+}
+
 export function OpportunityDiscovery({ onNavigate, onNotify }: OpportunityDiscoveryProps) {
   const { token, user } = useAuth();
-  const [form, setForm] = useState<Filters>(empty);
-  const [query, setQuery] = useState<Filters>(empty);
+  const [form, setForm] = useState<Filters>(initialFilters);
+  const [query, setQuery] = useState<Filters>(initialFilters);
   const [categories, setCategories] = useState<OpportunityCategoryOption[]>([]);
   const [results, setResults] = useState<Paged<Opportunity>>();
   const [savedIds, setSavedIds] = useState<Set<number>>(new Set());

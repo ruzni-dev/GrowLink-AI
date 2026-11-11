@@ -21,6 +21,7 @@ import { EditOpportunity } from './pages/EditOpportunity';
 import { MyOpportunities } from './pages/MyOpportunities';
 import { SavedOpportunities } from './pages/SavedOpportunities';
 import { ApplicationTracker } from './pages/ApplicationTracker';
+import { RecommendationDashboard } from './pages/RecommendationDashboard';
 
 function AppContent() {
   const [path, setPath] = useState(window.location.pathname);
@@ -71,6 +72,7 @@ function AppContent() {
   if (path === '/my-opportunities') page = <ProtectedRoute onNavigate={navigate}><MyOpportunities onNavigate={navigate} onNotify={notify} /></ProtectedRoute>;
   if (path === '/saved-opportunities') page = <ProtectedRoute onNavigate={navigate}><SavedOpportunities onNavigate={navigate} onNotify={notify} /></ProtectedRoute>;
   if (path === '/application-tracker') page = <ProtectedRoute onNavigate={navigate}><ApplicationTracker onNavigate={navigate} onNotify={notify} /></ProtectedRoute>;
+  if (path === '/recommendations') page = <ProtectedRoute onNavigate={navigate}><RecommendationDashboard onNavigate={navigate} onNotify={notify} /></ProtectedRoute>;
 
   return (
     <div className="app-shell">
