@@ -89,6 +89,18 @@ public class MentorshipService {
         return offerResponse(offer, profile, skills);
     }
 
+    @Transactional(readOnly = true)
+    public List<MentorshipOfferResponse> publicOffersForMentor(Long mentorId) {
+        User mentor = userRepository.findById(mentorId).filter(user -> user.getStatus() == UserStatus.ACTIVE)
+                .orElseThrow(() -> missing("Mentor"));
+        if (!isPublic(mentor)) throw missing("Mentor");
+        List<MentorshipOffer> offers = offerRepository.findByMentor_IdAndStatusOrderByCreatedAtDesc(mentorId, MentorshipOfferStatus.ACTIVE);
+        if (offers.isEmpty()) throw missing("Mentor");
+        UserProfile profile = profileRepository.findByUserEmailIgnoreCase(mentor.getEmail()).orElseThrow(() -> missing("Mentor"));
+        List<UserSkill> skills = userSkillRepository.findByUserEmailIgnoreCaseOrderBySkillNameAsc(mentor.getEmail());
+        return offers.stream().map(offer -> offerResponse(offer, profile, skills)).toList();
+    }
+
     @Transactional
     public MentorshipOfferResponse createOffer(String email, MentorshipOfferRequest request) {
         User mentor = activeUser(email);

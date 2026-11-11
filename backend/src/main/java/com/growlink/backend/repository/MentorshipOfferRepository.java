@@ -24,6 +24,8 @@ public interface MentorshipOfferRepository extends JpaRepository<MentorshipOffer
 
     Page<MentorshipOffer> findByMentorEmailIgnoreCase(String email, Pageable pageable);
 
+    List<MentorshipOffer> findByMentor_IdAndStatusOrderByCreatedAtDesc(Long mentorId, MentorshipOfferStatus status);
+
     @Query("select distinct offer from MentorshipOffer offer left join fetch offer.skills where offer.id in :ids")
     List<MentorshipOffer> findWithSkillsByIdIn(@Param("ids") Collection<Long> ids);
 

@@ -46,6 +46,10 @@ final class OpportunitySpecifications {
         };
     }
 
+    static Specification<Opportunity> excludingCreator(Long userId) {
+        return (root, query, builder) -> builder.notEqual(root.get("createdBy").get("id"), userId);
+    }
+
     private static Predicate matchingSkill(jakarta.persistence.criteria.CriteriaQuery<?> query,
             Root<Opportunity> opportunity, jakarta.persistence.criteria.CriteriaBuilder builder, String pattern) {
         Subquery<Integer> skillQuery = query.subquery(Integer.class);
