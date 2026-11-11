@@ -1,0 +1,26 @@
+import { useState } from 'react';
+import type { Experience } from '../services/profile';
+import { Icon } from './Icon';
+
+type ExperienceSectionProps = {
+  items: Experience[];
+  onSave: (data: Omit<Experience, 'id'>, id?: number) => Promise<void>;
+  onDelete: (id: number) => Promise<void>;
+};
+type ExperienceForm = Omit<Experience, 'id'>;
+const empty: ExperienceForm = { jobTitle: '', organization: '', employmentType: '', startDate: '', endDate: '', currentlyWorking: false, description: '' };
+
+export function ExperienceSection({ items, onSave, onDelete }: ExperienceSectionProps) {
+  const [form, setForm] = useState<ExperienceForm>(empty);
+  const [editing, setEditing] = useState<number>();
+  const [open, setOpen] = useState(false);
+  const update = (key: keyof ExperienceForm, value: string | boolean) => setForm((current) => ({ ...current, [key]: value }));
+  async function save() { await onSave(form, editing); setForm(empty); setEditing(undefined); setOpen(false); }
+  function edit(item: Experience) { setForm({ ...item, employmentType: item.employmentType || '', description: item.description || '', startDate: item.startDate || '', endDate: item.endDate || '' }); setEditing(item.id); setOpen(true); }
+  return <section className="profile-card">
+    <div className="profile-card__heading"><div><p className="eyebrow">Work experience</p><h2>Where you’ve made an impact</h2></div><button className="icon-button" type="button" aria-label="Add work experience" onClick={() => setOpen(!open)}><Icon name="plus" size={18} /></button></div>
+    {items.map((item) => <div className="profile-list-item" key={item.id}><div><h3>{item.jobTitle}</h3><p>{item.organization} {item.employmentType && ` · ${item.employmentType}`}</p><small>{item.startDate || '—'} - {item.currentlyWorking ? 'Present' : item.endDate || '—'}</small></div><div className="profile-list-item__actions"><button type="button" onClick={() => edit(item)}>Edit</button><button type="button" onClick={() => onDelete(item.id)}>Delete</button></div></div>)}
+    {items.length === 0 && <p className="profile-empty">Add roles, projects or community work that shaped you.</p>}
+    {open && <div className="profile-inline-form"><div className="profile-form__row"><label className="profile-field"><span>Job title</span><input value={form.jobTitle} onChange={(e) => update('jobTitle', e.target.value)} /></label><label className="profile-field"><span>Organization</span><input value={form.organization} onChange={(e) => update('organization', e.target.value)} /></label></div><div className="profile-form__row"><label className="profile-field"><span>Employment type</span><input value={form.employmentType || ''} onChange={(e) => update('employmentType', e.target.value)} placeholder="Full-time, volunteer..." /></label><label className="profile-field"><span>Start date</span><input type="date" value={form.startDate || ''} onChange={(e) => update('startDate', e.target.value)} /></label><label className="profile-field"><span>End date</span><input type="date" disabled={form.currentlyWorking} value={form.endDate || ''} onChange={(e) => update('endDate', e.target.value)} /></label></div><label className="profile-checkbox"><input type="checkbox" checked={form.currentlyWorking} onChange={(e) => update('currentlyWorking', e.target.checked)} /> I currently work here</label><textarea className="profile-textarea" rows={3} value={form.description || ''} onChange={(e) => update('description', e.target.value)} placeholder="What did you work on?" /><button className="button button--primary" type="button" onClick={save}>Save experience</button></div>}
+  </section>;
+}

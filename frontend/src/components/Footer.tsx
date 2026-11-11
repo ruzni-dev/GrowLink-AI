@@ -1,0 +1,9 @@
+import { Icon } from './Icon';
+
+type FooterProps = { onNotify: (message: string) => void };
+
+export function Footer({ onNotify }: FooterProps) {
+  return (
+    <footer className="site-footer"><div className="shell"><div className="site-footer__top"><div className="site-footer__brand"><a className="brand brand--footer" href="#home"><span className="brand__mark"><span>G</span></span><span className="brand__name">GrowLink <em>AI</em></span></a><p>Connecting talent, knowledge and opportunities to empower communities.</p><div className="social-links"><button type="button" aria-label="LinkedIn placeholder" onClick={() => onNotify('Social channels will be announced soon.')}>in</button><button type="button" aria-label="Instagram placeholder" onClick={() => onNotify('Social channels will be announced soon.')}>◎</button><button type="button" aria-label="YouTube placeholder" onClick={() => onNotify('Social channels will be announced soon.')}>▶</button></div></div><div className="site-footer__links"><div><b>Explore</b><a href="#talent">Explore Talent</a><a href="#categories">Categories</a><a href="#opportunities">Opportunities</a></div><div><b>Company</b><a href="#about">About Us</a><button type="button" onClick={() => onNotify('Contact details will be available soon.')}>Contact</button><button type="button" onClick={() => onNotify('Privacy policy will be available soon.')}>Privacy Policy</button></div><div><b>Join in</b><a href="#community">Community</a><button type="button" onClick={() => onNotify('Terms will be available soon.')}>Terms &amp; Conditions</button></div></div></div><div className="site-footer__bottom"><span>© 2026 GrowLink AI. All rights reserved.</span><span className="site-footer__note"><Icon name="globe" size={14} /> Built for people, everywhere.</span></div></div></footer>
+  );
+}

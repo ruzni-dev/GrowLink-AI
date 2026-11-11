@@ -1,0 +1,5 @@
+import { useEffect, useState } from 'react';
+import type { Interest } from '../services/profile';
+
+type InterestsSectionProps = { available: Interest[]; selected: Interest[]; onSave: (ids: number[]) => Promise<void> };
+export function InterestsSection({ available, selected, onSave }: InterestsSectionProps) { const [ids, setIds] = useState<number[]>(selected.map((item) => item.id)); useEffect(() => setIds(selected.map((item) => item.id)), [selected]); return <section className="profile-card"><div className="profile-card__heading"><div><p className="eyebrow">Interests</p><h2>What energizes you?</h2></div><span className="profile-card__count">06</span></div><div className="interest-grid">{available.map((interest) => <button type="button" className={`interest-pill ${ids.includes(interest.id) ? 'interest-pill--selected' : ''}`} key={interest.id} onClick={() => setIds((current) => current.includes(interest.id) ? current.filter((id) => id !== interest.id) : [...current, interest.id])}>{interest.name}</button>)}</div><button className="button button--primary" type="button" onClick={() => onSave(ids)}>Save interests</button></section>; }
