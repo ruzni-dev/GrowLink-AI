@@ -62,9 +62,17 @@ public class MentorshipService {
     @Transactional(readOnly = true)
     public PagedResponse<MentorshipOfferResponse> findOffers(String query, String category, String location,
             int page, int size, String sortBy) {
+        return findOffers(query, category, location, page, size, sortBy, null);
+        }
+
+        @Transactional(readOnly = true)
+        public PagedResponse<MentorshipOfferResponse> findOffers(String query, String category, String location,
+            int page, int size, String sortBy, Long excludedMentorId) {
         Pageable pageable = PageRequest.of(page, size, offerSort(sortBy));
+        var specification = MentorshipSpecifications.publicOffers(query, category, location);
+        if (excludedMentorId != null) specification = specification.and(MentorshipSpecifications.excludingMentor(excludedMentorId));
         Page<MentorshipOffer> offers = offerRepository.findAll(
-                MentorshipSpecifications.publicOffers(query, category, location), pageable);
+            specification, pageable);
         Map<Long, UserProfile> profiles = profilesFor(offers.getContent().stream().map(MentorshipOffer::getMentor).toList());
         Map<Long, List<UserSkill>> skills = skillsFor(offers.getContent().stream().map(MentorshipOffer::getMentor).toList());
         return PagedResponse.from(offers.map(offer -> offerResponse(offer, profiles.get(offer.getMentor().getId()),

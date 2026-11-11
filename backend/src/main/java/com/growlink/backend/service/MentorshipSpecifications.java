@@ -53,6 +53,10 @@ final class MentorshipSpecifications {
         };
     }
 
+    static Specification<MentorshipOffer> excludingMentor(Long mentorId) {
+        return (root, query, builder) -> builder.notEqual(root.get("mentor").get("id"), mentorId);
+    }
+
     private static Predicate matchingSkill(jakarta.persistence.criteria.CriteriaQuery<?> query,
             Root<MentorshipOffer> offer, jakarta.persistence.criteria.CriteriaBuilder builder, String pattern) {
         Subquery<Integer> skillQuery = query.subquery(Integer.class);
