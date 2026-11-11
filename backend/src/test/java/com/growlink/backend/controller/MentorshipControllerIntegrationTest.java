@@ -39,9 +39,10 @@ class MentorshipControllerIntegrationTest {
     void discoveryIsPublicButOfferManagementRequiresAuthentication() throws Exception {
         Account mentor = createAccount("PUBLIC");
         String title = "Public mentor " + UUID.randomUUID();
-        createOffer(mentor, title);
+        long offerId = createOffer(mentor, title);
 
-        mockMvc.perform(get("/api/mentorship/offers").param("q", title))
+        mockMvc.perform(get("/api/mentorship/offers").param("q", title)
+                        .param("category", "MENTORSHIP_GUIDANCE").param("location", "Colombo"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(1)))
                 .andExpect(jsonPath("$.content[0].title").value(title))
@@ -49,6 +50,9 @@ class MentorshipControllerIntegrationTest {
                 .andExpect(jsonPath("$.content[0].mentorEmail").doesNotExist())
                 .andExpect(jsonPath("$.content[0].phone").doesNotExist())
                 .andExpect(jsonPath("$.content[0].password").doesNotExist());
+        mockMvc.perform(get("/api/mentorship/offers/" + offerId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.mentorBio").value("Community member with practical mentoring experience."));
 
         mockMvc.perform(get("/api/mentorship/my-offers"))
                 .andExpect(status().isUnauthorized());
@@ -118,6 +122,10 @@ class MentorshipControllerIntegrationTest {
         mockMvc.perform(put("/api/mentorship/offers/" + offerId).header("Authorization", bearer(other.token()))
                         .contentType(MediaType.APPLICATION_JSON).content(offerPayload("Hijacked", mentor.skillId())))
                 .andExpect(status().isNotFound());
+        mockMvc.perform(put("/api/mentorship/offers/" + offerId).header("Authorization", bearer(mentor.token()))
+                        .contentType(MediaType.APPLICATION_JSON).content(offerPayload("Updated offer", mentor.skillId())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").value("Updated offer"));
         mockMvc.perform(patch("/api/mentorship/requests/" + requestId + "/accept").header("Authorization", bearer(other.token())))
                 .andExpect(status().isNotFound());
         mockMvc.perform(patch("/api/mentorship/requests/" + requestId + "/accept").header("Authorization", bearer(mentor.token())))
