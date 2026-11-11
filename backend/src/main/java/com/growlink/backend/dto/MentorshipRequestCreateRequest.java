@@ -9,6 +9,6 @@ import jakarta.validation.constraints.Size;
 
 public record MentorshipRequestCreateRequest(
         @NotNull @Positive Long offerId,
-        @NotBlank @Size(max = 2000) String message,
-        @NotBlank @Size(max = 2000) String goals,
+        @NotBlank @Size(min = 20, max = 2000) String message,
+        @NotBlank @Size(min = 10, max = 2000) String goals,
         @NotNull MentorshipMode preferredMode) {}
