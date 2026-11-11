@@ -61,7 +61,9 @@ public class SecurityConfig {
                         .accessDeniedHandler(accessDeniedHandler))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/health", "/api/auth/register", "/api/auth/login", "/api/talents", "/api/talents/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/mentorship/offers", "/api/mentorship/offers/*").permitAll()
+                        .requestMatchers("/api/opportunities/saved", "/api/opportunities/my-opportunities", "/api/opportunities/applications").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/opportunities", "/api/opportunities/search", "/api/opportunities/categories", "/api/opportunities/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/mentorship/offers", "/api/mentorship/offers/*").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
