@@ -13,6 +13,7 @@ import { MentorDiscovery } from './pages/MentorDiscovery';
 import { MentorDetails } from './pages/MentorDetails';
 import { CreateMentorshipOffer } from './pages/CreateMentorshipOffer';
 import { MyMentorship } from './pages/MyMentorship';
+import { EditMentorshipOffer } from './pages/EditMentorshipOffer';
 
 function AppContent() {
   const [path, setPath] = useState(window.location.pathname);
@@ -52,7 +53,7 @@ function AppContent() {
   if (mentorDetailsMatch) page = <MentorDetails id={Number(mentorDetailsMatch[1])} onNavigate={navigate} onNotify={notify} />;
   if (path === '/mentorship/create') page = <ProtectedRoute onNavigate={navigate}><CreateMentorshipOffer onNavigate={navigate} onNotify={notify} /></ProtectedRoute>;
   const editOfferMatch = path.match(/^\/mentorship\/edit\/(\d+)$/);
-  if (editOfferMatch) page = <ProtectedRoute onNavigate={navigate}><CreateMentorshipOffer offerId={Number(editOfferMatch[1])} onNavigate={navigate} onNotify={notify} /></ProtectedRoute>;
+  if (editOfferMatch) page = <ProtectedRoute onNavigate={navigate}><EditMentorshipOffer offerId={Number(editOfferMatch[1])} onNavigate={navigate} onNotify={notify} /></ProtectedRoute>;
   if (path === '/my-mentorship') page = <ProtectedRoute onNavigate={navigate}><MyMentorship onNavigate={navigate} onNotify={notify} /></ProtectedRoute>;
 
   return (
