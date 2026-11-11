@@ -16,6 +16,7 @@ record RecommendationContext(
         List<String> experienceTerms,
         Set<String> categories,
         Set<String> preferredLocations,
+        Set<String> interestedSkills,
         Set<String> interests,
         Set<String> learningGoals,
         RemotePreference remotePreference) {
@@ -28,6 +29,8 @@ record RecommendationContext(
         Set<String> desired = new LinkedHashSet<>(skills.values().stream()
                 .filter(skill -> "BEGINNER".equals(skill.proficiencyLevel()) || "INTERMEDIATE".equals(skill.proficiencyLevel()))
                 .map(SkillFact::name).toList());
+        desired.addAll(interestedSkills);
+        if (desired.isEmpty()) desired.addAll(currentSkills());
         return desired;
     }
 
