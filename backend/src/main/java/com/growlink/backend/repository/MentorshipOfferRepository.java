@@ -2,6 +2,7 @@ package com.growlink.backend.repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Collection;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,9 @@ public interface MentorshipOfferRepository extends JpaRepository<MentorshipOffer
     Page<MentorshipOffer> findByMentorEmailIgnoreCaseAndStatus(String email, MentorshipOfferStatus status, Pageable pageable);
 
     Page<MentorshipOffer> findByMentorEmailIgnoreCase(String email, Pageable pageable);
+
+    @Query("select distinct offer from MentorshipOffer offer left join fetch offer.skills where offer.id in :ids")
+    List<MentorshipOffer> findWithSkillsByIdIn(@Param("ids") Collection<Long> ids);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select offer from MentorshipOffer offer where offer.id = :id")
