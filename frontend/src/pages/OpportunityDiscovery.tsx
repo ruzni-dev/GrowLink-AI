@@ -46,6 +46,7 @@ export function OpportunityDiscovery({ onNavigate, onNotify }: OpportunityDiscov
   }
 
   async function toggleSave(id: number) {
+    if (savingId === id) return;
     if (!token || !user) { onNavigate('/login'); return; }
     if (user.status !== 'ACTIVE') { onNotify('An active account is required to save opportunities.'); return; }
     setSavingId(id);
