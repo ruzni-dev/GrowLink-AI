@@ -181,11 +181,10 @@ public class OpportunityService {
 
     @Transactional(readOnly = true)
     public PagedResponse<OpportunityApplicationResponse> applications(String email, OpportunityApplicationStatus status, int page, int size) {
-        Page<OpportunityApplication> applications = applicationRepository.findByUserEmailIgnoreCase(email,
-                PageRequest.of(page, size, Sort.by(Sort.Order.desc("updatedAt"), Sort.Order.desc("id"))));
-        Page<OpportunityApplication> filtered = status == null ? applications
-                : applicationRepository.findByUserEmailIgnoreCaseAndStatus(email, status,
-                        PageRequest.of(page, size, Sort.by(Sort.Order.desc("updatedAt"), Sort.Order.desc("id"))));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("updatedAt"), Sort.Order.desc("id")));
+        Page<OpportunityApplication> filtered = status == null
+            ? applicationRepository.findByUserEmailIgnoreCase(email, pageable)
+            : applicationRepository.findByUserEmailIgnoreCaseAndStatus(email, status, pageable);
         return PagedResponse.from(filtered.map(application -> applicationResponse(application, email)));
     }
 

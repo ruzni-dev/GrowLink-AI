@@ -171,6 +171,34 @@ class OpportunityControllerIntegrationTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    void categoryListPaginationAndSortingAreStable() throws Exception {
+        Account creator = createAccount();
+        String prefix = "Paged " + UUID.randomUUID();
+        createOpportunity(creator, prefix + " Zulu", "PUBLISHED");
+        createOpportunity(creator, prefix + " Alpha", "PUBLISHED");
+
+        mockMvc.perform(get("/api/opportunities/categories"))
+                .andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(9)))
+                .andExpect(jsonPath("$[0].value").value("JOB"));
+        mockMvc.perform(get("/api/opportunities/search").param("q", prefix).param("sortBy", "title").param("page", "0").param("size", "1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(jsonPath("$.content[0].title").value(prefix + " Alpha"))
+                .andExpect(jsonPath("$.totalElements").value(2))
+                .andExpect(jsonPath("$.totalPages").value(2));
+    }
+
+    @Test
+    void anonymousUsersCannotCreateSaveOrTrack() throws Exception {
+        mockMvc.perform(post("/api/opportunities").contentType(MediaType.APPLICATION_JSON).content("{}"))
+                .andExpect(status().isUnauthorized());
+        mockMvc.perform(post("/api/opportunities/1/save"))
+                .andExpect(status().isUnauthorized());
+        mockMvc.perform(post("/api/opportunities/1/track").contentType(MediaType.APPLICATION_JSON).content("{}"))
+                .andExpect(status().isUnauthorized());
+    }
+
     private long createOpportunity(Account creator, String title, String status) throws Exception {
         MvcResult result = mockMvc.perform(post("/api/opportunities").header("Authorization", bearer(creator.token()))
                         .contentType(MediaType.APPLICATION_JSON).content(opportunityPayload(title, status)))
