@@ -49,15 +49,6 @@ export const talents: Talent[] = [
   },
 ];
 
-export const opportunities = [
-  { icon: '✧', name: 'Scholarships', description: 'Find funding pathways for your next chapter.' },
-  { icon: '↗', name: 'Internships', description: 'Build experience with teams doing meaningful work.' },
-  { icon: '◫', name: 'Training Programs', description: 'Learn in public, practical and supportive spaces.' },
-  { icon: '⌁', name: 'Career Opportunities', description: 'Discover roles aligned with your strengths.' },
-  { icon: '♧', name: 'Volunteer Programs', description: 'Give your time to a cause that matters.' },
-  { icon: '✦', name: 'Mentorship Programs', description: 'Find a guide for the road ahead.' },
-];
-
 export const steps = [
   { number: '01', title: 'Discover', description: 'Explore people, skills and opportunities that expand what feels possible.' },
   { number: '02', title: 'Connect', description: 'Bring learners, mentors, organizations and communities closer together.' },

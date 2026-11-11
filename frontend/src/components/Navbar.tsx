@@ -6,7 +6,7 @@ const links = [
   { label: 'Explore Talent', href: '/talents' },
   { label: 'Mentorship', href: '/mentors' },
   { label: 'Categories', href: '#categories' },
-  { label: 'Opportunities', href: '#opportunities' },
+  { label: 'Opportunities', href: '/opportunities' },
   { label: 'About Us', href: '#about' },
 ];
 

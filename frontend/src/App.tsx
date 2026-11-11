@@ -14,6 +14,13 @@ import { MentorDetails } from './pages/MentorDetails';
 import { CreateMentorshipOffer } from './pages/CreateMentorshipOffer';
 import { MyMentorship } from './pages/MyMentorship';
 import { EditMentorshipOffer } from './pages/EditMentorshipOffer';
+import { OpportunityDiscovery } from './pages/OpportunityDiscovery';
+import { OpportunityDetails } from './pages/OpportunityDetails';
+import { CreateOpportunity } from './pages/CreateOpportunity';
+import { EditOpportunity } from './pages/EditOpportunity';
+import { MyOpportunities } from './pages/MyOpportunities';
+import { SavedOpportunities } from './pages/SavedOpportunities';
+import { ApplicationTracker } from './pages/ApplicationTracker';
 
 function AppContent() {
   const [path, setPath] = useState(window.location.pathname);
@@ -55,6 +62,15 @@ function AppContent() {
   const editOfferMatch = path.match(/^\/mentorship\/edit\/(\d+)$/);
   if (editOfferMatch) page = <ProtectedRoute onNavigate={navigate}><EditMentorshipOffer offerId={Number(editOfferMatch[1])} onNavigate={navigate} onNotify={notify} /></ProtectedRoute>;
   if (path === '/my-mentorship') page = <ProtectedRoute onNavigate={navigate}><MyMentorship onNavigate={navigate} onNotify={notify} /></ProtectedRoute>;
+  if (path === '/opportunities') page = <OpportunityDiscovery onNavigate={navigate} onNotify={notify} />;
+  const opportunityDetailsMatch = path.match(/^\/opportunities\/(\d+)$/);
+  if (opportunityDetailsMatch) page = <OpportunityDetails id={Number(opportunityDetailsMatch[1])} onNavigate={navigate} onNotify={notify} />;
+  if (path === '/opportunities/create') page = <ProtectedRoute onNavigate={navigate}><CreateOpportunity onNavigate={navigate} onNotify={notify} /></ProtectedRoute>;
+  const editOpportunityMatch = path.match(/^\/opportunities\/edit\/(\d+)$/);
+  if (editOpportunityMatch) page = <ProtectedRoute onNavigate={navigate}><EditOpportunity id={Number(editOpportunityMatch[1])} onNavigate={navigate} onNotify={notify} /></ProtectedRoute>;
+  if (path === '/my-opportunities') page = <ProtectedRoute onNavigate={navigate}><MyOpportunities onNavigate={navigate} onNotify={notify} /></ProtectedRoute>;
+  if (path === '/saved-opportunities') page = <ProtectedRoute onNavigate={navigate}><SavedOpportunities onNavigate={navigate} onNotify={notify} /></ProtectedRoute>;
+  if (path === '/application-tracker') page = <ProtectedRoute onNavigate={navigate}><ApplicationTracker onNavigate={navigate} onNotify={notify} /></ProtectedRoute>;
 
   return (
     <div className="app-shell">
